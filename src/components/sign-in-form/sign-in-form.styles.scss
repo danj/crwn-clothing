@@ -9,8 +9,6 @@
 
   .buttons {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    column-gap: 1em;
+    justify-content: space-between;
   }
 }
