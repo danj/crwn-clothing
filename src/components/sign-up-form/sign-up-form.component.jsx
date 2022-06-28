@@ -34,6 +34,8 @@ const SignUpForm = () => {
 
         try {
             const userAuth = await createAuthUserWithEmailAndPassword(email, password);
+
+            //TODO - does this cause a race condition issue with the user.context which generally tries to create the doc?
             const userDoc = await getOrCreateUserDocumentFromAuth(userAuth, { displayName });
             console.log(userDoc);
         }
