@@ -30,9 +30,7 @@ const SignInForm = () => {
         }
 
         try {
-            const userAuth = await signInUserWithEmailAndPassword(email, password);
-            const userDoc = await getOrCreateUserDocumentFromAuth(userAuth);
-            console.log(userDoc);
+            await signInUserWithEmailAndPassword(email, password);
         }
         catch (error) {
            console.log('Error with sign in', error.message);
@@ -41,8 +39,7 @@ const SignInForm = () => {
 
     const logGoogleUser = async () => {
         try {
-            const response = await signInWithGooglePopup();
-            const userDocRef = getOrCreateUserDocumentFromAuth(response.user);
+            await signInWithGooglePopup();
         }
         catch (e) {
             console.log(e);
