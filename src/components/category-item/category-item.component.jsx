@@ -10,6 +10,4 @@ const CategoryItem = ({category}) => (
     </div>
 )
 
-
-
 export default CategoryItem;
