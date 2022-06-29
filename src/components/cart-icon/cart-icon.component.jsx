@@ -4,13 +4,12 @@ import {useContext} from "react";
 import('./cart-icon.styles.scss');
 
 const CartIcon = ({onClick}) => {
-    const { items } = useContext(CartContext);
-    const count = items.reduce((sum, item) => sum + item.quantity, 0);
+    const { items, itemCount } = useContext(CartContext);
 
     return (
         <div className="cart-icon-container" onClick={onClick}>
             <ShoppingBagIcon className="shopping-icon" />
-            <span className="item-count">{count}</span>
+            <span className="item-count">{itemCount}</span>
         </div>
     )
 }
