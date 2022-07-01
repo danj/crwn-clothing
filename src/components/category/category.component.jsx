@@ -2,8 +2,9 @@ import ProductCard from "../product-card/product-card.component";
 import {useContext, useEffect, useState} from "react";
 import {CategoriesContext} from "../../contexts/categories.context";
 import {useParams} from "react-router-dom";
+import {CategoryContainer} from "./category.styles";
 
-import('./category.styles.scss');
+import('./category.styles');
 
 const Category = () => {
     const { category } = useParams();
@@ -11,17 +12,20 @@ const Category = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        setProducts(categoriesMap[category]);
-    }, [category]);
+        if (categoriesMap && categoriesMap[category]) {
+            setProducts(categoriesMap[category]);
+        }
+    }, [category, categoriesMap]);
 
     return (
         <>
-            <h2>{category.toUpperCase()}</h2>
-            <div className="category-container">
+
+            <CategoryContainer>
+                <span className="title">{category.toUpperCase()}</span>
                 <div className="preview">
                     { products.map((p) => (<ProductCard key={p.id} product={p}/>)) }
                 </div>
-            </div>
+            </CategoryContainer>
         </>
     )
 }

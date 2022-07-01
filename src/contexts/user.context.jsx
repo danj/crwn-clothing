@@ -18,9 +18,7 @@ export const UserProvider = ({ children }) => {
         const unsubscribe = onAuthStateChangeListener(async (user) => {
             setCurrentUser(user);
             if (user) {
-                console.log("Getting userDoc");
                 const userDoc = await getOrCreateUserDocumentFromAuth(user);
-                console.log("UserDoc: ", userDoc);
                 setCurrentUserDoc(userDoc);
             } else {
                 setCurrentUserDoc(null);
