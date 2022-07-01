@@ -18,7 +18,7 @@ const CartDropdown = () => {
 
     return (
         <div className="cart-dropdown-container">
-            {items ? (
+            {items.length ? (
                 <div className="cart-items">
                     { items.map((item) => <CartItem key={item.id} item={item} />) }
                 </div>)

@@ -5,7 +5,7 @@ import { getAuth,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
     onAuthStateChanged
 } from 'firebase/auth'
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, getDocs, query } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -80,3 +80,28 @@ export const signOutUser = async () => {
 }
 
 export const onAuthStateChangeListener = (callback) => onAuthStateChanged(auth, callback);
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((object) => {
+       const docRef = doc(collectionRef, object.title.toLowerCase());
+       batch.set(docRef, object)
+    });
+
+    await batch.commit();
+    console.log('Done');
+}
+
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+    const snapshot = await getDocs(q);
+    const categories = snapshot.docs.reduce((acc, docSnapshot) => {
+        const {title, items} = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {});
+    return categories;
+}
