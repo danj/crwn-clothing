@@ -1,5 +1,5 @@
 import Home from "./routes/home/home.component";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import Navigation from "./routes/navigation/navigation.component";
 import SignIn from "./routes/authentication/authentication.component";
 import Checkout from "./routes/checkout/checkout.component";
@@ -12,6 +12,7 @@ import {setCategoriesMap} from "./store/categories/categories.reducer";
 
 const App = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const helper = async () => {
@@ -23,6 +24,9 @@ const App = () => {
 
     useEffect(() => {
         return onAuthStateChangeListener(async (user) => {
+            if (user) {
+                navigate('/shop');
+            }
             dispatch(await setCurrentUser(user));
         });
     }, []);
