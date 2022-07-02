@@ -1,23 +1,20 @@
 import {Outlet} from 'react-router-dom';
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import {signOutUser} from "../../utils/firebase/firebase.utils";
-import {useContext} from "react";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
-import {CartContext} from "../../contexts/cart.context";
 import {LogoContainer, NavigationContainer, NavLink, NavlinkContainer} from "./navigation.styles";
-import {currentUserDisplayNameSelector, currentUserSelector} from "../../store/user/user.selector";
-import {useSelector} from "react-redux";
-
-
+import {currentUserDisplayNameSelector, currentUserSelector} from "../../store/user/user.selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {cartIsOpenSelector} from "../../store/cart/cart.selectors";
+import {toggleCartOpen} from "../../store/cart/cart.actions";
 
 const Navigation = () => {
     const currentUser = useSelector(currentUserSelector);
     const displayName = useSelector(currentUserDisplayNameSelector);
-    const { isCartOpen, setCartOpen } = useContext(CartContext);
-
-    const toggleCartOpen = () => setCartOpen(!isCartOpen);
-
+    const dispatch = useDispatch();
+    const isCartOpen = useSelector(cartIsOpenSelector);
+    const toggleCart = () => dispatch(toggleCartOpen());
     return (
         <>
             <NavigationContainer>
@@ -30,7 +27,7 @@ const Navigation = () => {
                         <NavLink as='span' onClick={signOutUser}>SIGN OUT ({displayName})</NavLink> :
                         <NavLink to="/auth">SIGN IN</NavLink>
                     }
-                    <CartIcon onClick={toggleCartOpen} />
+                    <CartIcon onClick={toggleCart} />
                 </NavlinkContainer>
                 { isCartOpen && <CartDropdown /> }
             </NavigationContainer>
