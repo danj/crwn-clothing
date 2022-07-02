@@ -5,7 +5,7 @@ import { getAuth,
     createUserWithEmailAndPassword, signInWithEmailAndPassword,
     onAuthStateChanged
 } from 'firebase/auth'
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, getDocs, query } from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, writeBatch, getDocs, query } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -34,26 +34,54 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider)
 export const db = getFirestore();
 
 export const getOrCreateUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
+    const { displayName, email } = userAuth;
     const userDocRef = doc(db, 'users', userAuth.uid);
-    const userSnapshot = await getDoc(userDocRef);
+    const userDoc = await getDoc(userDocRef);
 
-    if (!userSnapshot.exists()) {
-        const { displayName, email } = userAuth;
-        const createdAt = new Date();
+    if (!userDoc.exists()) {
+        const data = {
+            displayName,
+            email,
+            createdAt: new Date(),
+            ...additionalInformation,
+        }
+        console.log(`Setting user doc with ${JSON.stringify(data)}`);
         try {
-            await setDoc(userDocRef, {
-                displayName,
-                email,
-                createdAt,
-                ...additionalInformation,
-            });
+            await setDoc(userDocRef, data);
         }
         catch (error) {
             console.log('error creating user', error.message);
         }
+    } else {
+        //check if any keys need updating
+        const fieldsToCheck = {
+            email,
+            ...additionalInformation
+        };
+        const fieldsToUpdate = {}
+        const userData = userDoc.data();
+        Object.keys(fieldsToCheck).forEach((key) => {
+           if (fieldsToCheck[key] !== userData[key]) {
+               fieldsToUpdate[key] = fieldsToCheck[key];
+           }
+        });
+
+        if (displayName && displayName !== userData.displayName) {
+            fieldsToUpdate.displayName = fieldsToUpdate;
+        }
+        if (fieldsToUpdate) {
+            console.log(`Updating user ${userData.email} with ${JSON.stringify(fieldsToUpdate)}`);
+            try {
+                await updateDoc(userDocRef, fieldsToUpdate, { merge: true });
+            }
+            catch (error) {
+                console.log('error updating user', error.message);
+            }
+        }
     }
 
-    return userDocRef;
+    const updatedDoc = await getDoc(userDocRef);
+    return updatedDoc;
 }
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {

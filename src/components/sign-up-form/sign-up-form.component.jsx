@@ -2,6 +2,8 @@ import {useState} from "react";
 import {createAuthUserWithEmailAndPassword, getOrCreateUserDocumentFromAuth} from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
+import {useDispatch} from "react-redux";
+import {setCurrentUserDoc} from "../../store/user/user.action";
 import('./sign-up-form.styles.scss');
 
 const defaultFormFields = {
@@ -15,6 +17,8 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
 
+    const dispatch = useDispatch();
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormFields({...formFields, [name]: value});
@@ -23,27 +27,24 @@ const SignUpForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!displayName || !email || !password) {
-            console.log("all fields required");
+            alert("All fields required");
             return
         }
 
         if (confirmPassword != password) {
-            console.log("passwords don't match");
+            alert("passwords don't match");
             return
         }
 
         try {
             const userAuth = await createAuthUserWithEmailAndPassword(email, password);
-
-            //TODO - does this cause a race condition issue with the user.context which generally tries to create the doc?
             const userDoc = await getOrCreateUserDocumentFromAuth(userAuth, { displayName });
-            console.log(userDoc);
+            dispatch(setCurrentUserDoc(userDoc));
         }
         catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 alert('Email already in use!');
             }
-
             console.log('Error with sign up', error.message);
         }
     }

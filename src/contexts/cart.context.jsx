@@ -25,7 +25,7 @@ const _decItemFromCart = (cartItems, productToDecrease) => {
 }
 
 const _removeItemFromCart = (cartItems, productToRemove) => {
-    return cartItems.filter((item) => item.id != productToRemove.id);
+    return cartItems.filter((item) => item.id !== productToRemove.id);
 }
 
 export const CartContext = createContext({
@@ -38,6 +38,82 @@ export const CartContext = createContext({
     itemCount: 0,
     total: 0,
 });
+//
+// const INITIAL_STATE = {
+//     isCartOpen: false,
+//     items: [],
+//     itemCount: 0,
+//     total: 0
+// };
+//
+// const CART_ACTIONS = {
+//     OPEN: 'OPEN',
+//     CLOSE: 'CLOSE',
+//     TOGGLE: 'TOGGLE',
+//     RESET: 'RESET',
+//     ADD_ITEM: 'ADD_ITEM',
+//     REMOVE_ITEM: 'REMOVE_ITEM'
+// }
+//
+// const CartReducder = (state, action) => {
+//     const { type, payload } = action;
+//     switch (type) {
+//         case 'OPEN':
+//             return {...state, isCartOpen: true}
+//
+//         case 'CLOSE':
+//             return {...state, isCartOpen: false}
+//
+//         case 'TOGGLE':
+//             const { isCartOpen } = state;
+//             return {...state, isCartOpen: !isCartOpen}
+//
+//         case 'RESET':
+//             return INITIAL_STATE;
+//
+//         case 'ADD_ITEM': {
+//             const {items} = state;
+//             const {item} = payload;
+//
+//             let found = false;
+//             const newItems = items.map((item_) => {
+//                 if (item_.id === item.id) {
+//                     found = true;
+//                     return {...item_, quantity: item_.quantity + item.quantity}
+//                 } else {
+//                     return _item;
+//                 }
+//             });
+//             if (!found) {
+//                 newItems.append(item);
+//             }
+//             return {
+//                 ...state,
+//                 items: newItems,
+//                 itemCount: state.itemCount + item.quantity,
+//                 total: state.total + item.price * item.quantity
+//             }
+//         }
+//
+//         case 'REMOVE_ITEM': {
+//             const {items} = state;
+//             const {item} = payload;
+//
+//             const newItems = items.filter((item_) => item_.id != item.id);
+//
+//             return {
+//                 ...state,
+//                 items: newItems,
+//                 itemCount: state.itemCount + item.quantity,
+//                 total: state.total + item.price * item.quantity
+//             }
+//         }
+//
+//         default:
+//             throw Error(`Unexpected action type: ${type}`);
+//     }
+// }
+
 
 export const CartProvider = ({ children }) => {
     const [isCartOpen, setCartOpen] = useState(false);
