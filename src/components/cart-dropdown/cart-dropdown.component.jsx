@@ -10,7 +10,7 @@ import('./cart-dropdown.styles.scss');
 const CartDropdown = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const items = Array.from(useSelector(cartItemsSelector).values());
+    const items = useSelector(cartItemsSelector);
 
     const onCheckoutClick = () => {
         dispatch(closeCart());

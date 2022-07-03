@@ -1,6 +1,6 @@
 import Directory from "../../components/directory/directory.component";
 
-const Home = ({}) => {
+const Home = () => {
     const categories = [
         {
             "id": 1,

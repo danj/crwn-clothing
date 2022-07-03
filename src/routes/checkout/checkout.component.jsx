@@ -4,7 +4,8 @@ import {cartItemsSelector, cartTotalSelector} from "../../store/cart/cart.select
 import ('./checkout.styles.scss');
 
 const Checkout = () => {
-    const items = Array.from(useSelector(cartItemsSelector).values());
+    console.log('XXXXXX  Re-render');
+    const items = useSelector(cartItemsSelector);
     const total = useSelector(cartTotalSelector);
 
     return (

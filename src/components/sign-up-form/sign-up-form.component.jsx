@@ -31,7 +31,7 @@ const SignUpForm = () => {
             return
         }
 
-        if (confirmPassword != password) {
+        if (confirmPassword !== password) {
             alert("passwords don't match");
             return
         }
