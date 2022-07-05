@@ -1,11 +1,11 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {
     signInUserWithEmailAndPassword,
     signInWithGooglePopup
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
-import('./sign-in-form.styles.scss');
+import {SignInContainer} from "./sign-in-form.styles";
 
 const defaultFormFields = {
     email: '',
@@ -16,12 +16,12 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormFields({...formFields, [name]: value});
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!email || !password) {
             console.log("all fields required");
@@ -31,8 +31,8 @@ const SignInForm = () => {
         try {
             await signInUserWithEmailAndPassword(email, password);
         }
-        catch (error) {
-           console.log('Error with sign in', error.message);
+        catch (error: any) {
+            console.log('Error with sign in', error.message);
         }
     }
 
@@ -46,7 +46,7 @@ const SignInForm = () => {
     }
 
     return (
-        <div className="sign-in-container">
+        <SignInContainer>
             <h2>I already have an account?</h2>
             <span>Sign in with your email and password</span>
             <form onSubmit={handleSubmit}>
@@ -57,7 +57,7 @@ const SignInForm = () => {
                     <Button type="button" buttonType={BUTTON_TYPE_CLASSES.google} onClick={logGoogleUser}>SIGN IN WITH GOOGLE</Button>
                 </span>
             </form>
-        </div>
+        </SignInContainer>
     )
 }
 

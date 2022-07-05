@@ -1,10 +1,10 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {createAuthUserWithEmailAndPassword, getOrCreateUserDocumentFromAuth} from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import {useDispatch} from "react-redux";
 import {setCurrentUserDoc} from "../../store/user/user.actions";
-import('./sign-up-form.styles.scss');
+import {SignUpContainer} from "./sign-up-form.styles";
 
 const defaultFormFields = {
     displayName: '',
@@ -19,12 +19,12 @@ const SignUpForm = () => {
 
     const dispatch = useDispatch();
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormFields({...formFields, [name]: value});
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!displayName || !email || !password) {
             alert("All fields required");
@@ -41,7 +41,7 @@ const SignUpForm = () => {
             const userDoc = await getOrCreateUserDocumentFromAuth(userAuth, { displayName });
             dispatch(setCurrentUserDoc(userDoc));
         }
-        catch (error) {
+        catch (error: any) {
             if (error.code === 'auth/email-already-in-use') {
                 alert('Email already in use!');
             }
@@ -50,7 +50,7 @@ const SignUpForm = () => {
     }
 
     return (
-        <div className="sign-up-container">
+        <SignUpContainer>
             <h2>Don't have an account?</h2>
             <span>Sign up with your email and password</span>
             <form onSubmit={handleSubmit}>
@@ -60,7 +60,7 @@ const SignUpForm = () => {
                 <FormInput label="Confirm Password" required name="confirmPassword" type="password" onChange={handleChange} value={confirmPassword}/>
                 <Button type="submit">SIGN UP</Button>
             </form>
-        </div>
+        </SignUpContainer>
     )
 }
 

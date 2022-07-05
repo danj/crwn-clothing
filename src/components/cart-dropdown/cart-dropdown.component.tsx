@@ -4,8 +4,9 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {cartItemsSelector} from "../../store/cart/cart.selectors";
 import {closeCart} from "../../store/cart/cart.actions";
+import {CartDropdownContainer} from "./cart-dropdown.styles";
 
-import('./cart-dropdown.styles.scss');
+import('./cart-dropdown.styles');
 
 const CartDropdown = () => {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const CartDropdown = () => {
     }   
 
     return (
-        <div className="cart-dropdown-container">
+        <CartDropdownContainer>
             {items.length ? (
                 <div className="cart-items">
                     { items.map((item) => <CartItem key={item.id} item={item} />) }
@@ -26,7 +27,7 @@ const CartDropdown = () => {
                 : <span className="empty-message">Empty</span>
             }
             <Button onClick={onCheckoutClick}>GO TO CHECKOUT</Button>
-        </div>
+        </CartDropdownContainer>
     );
 }
 

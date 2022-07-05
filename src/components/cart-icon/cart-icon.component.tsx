@@ -1,16 +1,22 @@
 import { ReactComponent as ShoppingBagIcon } from "../../assets/shopping-bag.svg";
 import {useSelector} from "react-redux";
 import {cartItemCountSelector} from "../../store/cart/cart.selectors";
-import('./cart-icon.styles.scss');
+import {CartIconContainer} from "./cart-icon.styles";
+import {MouseEventHandler} from "react";
+import('./cart-icon.styles');
 
-const CartIcon = ({onClick}) => {
+type CartIconProps = {
+    onClick: MouseEventHandler;
+}
+
+const CartIcon = ({onClick}: CartIconProps) => {
     const itemCount = useSelector(cartItemCountSelector);
 
     return (
-        <div className="cart-icon-container" onClick={onClick}>
+        <CartIconContainer onClick={onClick}>
             <ShoppingBagIcon className="shopping-icon" />
             <span className="item-count">{itemCount}</span>
-        </div>
+        </CartIconContainer>
     )
 }
 

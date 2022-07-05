@@ -1,7 +1,12 @@
 import {CategoryContainer} from "./category-item.styles";
 import {useNavigate} from "react-router-dom";
+import {Category} from "../../types/types";
 
-const CategoryItem = ({category}) => {
+type CategoryItemProps = {
+    category: Category
+}
+
+const CategoryItem = ({category}: CategoryItemProps) => {
     const navigate = useNavigate();
 
     const shopNow = () => {

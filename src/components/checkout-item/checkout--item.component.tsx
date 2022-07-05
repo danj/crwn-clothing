@@ -1,15 +1,20 @@
 import {useDispatch} from "react-redux";
 import {addItemToCart, decreaseItemQuantity, removeItemFromCart} from "../../store/cart/cart.actions";
-import ('./checkout-item.styles.scss');
+import {CheckoutItemContainer} from "./checkout-item.styles";
+import {Item} from "../../types/types";
 
-const CheckoutItem = ({item}) => {
+type CheckoutItemProps = {
+    item: Item;
+}
+
+const CheckoutItem = ({item}: CheckoutItemProps) => {
     const dispatch = useDispatch();
     const decreaseHandler = () => dispatch(decreaseItemQuantity(item));
     const increaseHandler = () => dispatch(addItemToCart(item));
     const removeHandler = () => dispatch(removeItemFromCart(item));
 
     return (
-        <div className="checkout-item-container">
+        <CheckoutItemContainer>
             <div className="image-container">
                 <img src={item.imageUrl} alt={`${item.name}`} />
             </div>
@@ -24,7 +29,7 @@ const CheckoutItem = ({item}) => {
 
             <span className="price">${item.price}</span>
             <div className="remove-button" onClick={removeHandler}>&#10005;</div>
-        </div>
+        </CheckoutItemContainer>
     );
 }
 
