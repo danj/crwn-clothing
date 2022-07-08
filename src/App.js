@@ -10,7 +10,7 @@ import {setCurrentUser} from "./store/user/user.actions";
 import {useDispatch} from "react-redux";
 
 import { GlobalStyle} from "./global.styles";
-import {fetchCategoriesAsync} from "./store/categories/categories.actions";
+import { fetchCategoriesStart} from "./store/categories/categories.actions";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchCategoriesAsync());
+        dispatch(fetchCategoriesStart());
     }, []);
 
     return (
