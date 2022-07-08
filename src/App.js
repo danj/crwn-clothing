@@ -5,11 +5,12 @@ import SignIn from "./routes/authentication/authentication.component";
 import Checkout from "./routes/checkout/checkout.component";
 import Shop from "./routes/shop/shop.component";
 import {useEffect} from "react";
-import {onAuthStateChangeListener} from "./utils/firebase/firebase.utils";
+import {getCategoriesAndDocuments, onAuthStateChangeListener} from "./utils/firebase/firebase.utils";
 import {setCurrentUser} from "./store/user/user.actions";
 import {useDispatch} from "react-redux";
 
 import { GlobalStyle} from "./global.styles";
+import {setCategories} from "./store/categories/categories.reducer";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -22,6 +23,14 @@ const App = () => {
             }
             dispatch(await setCurrentUser(user));
         });
+    }, []);
+
+    useEffect(() => {
+        const helper = async () => {
+            const categories = await getCategoriesAndDocuments();
+            dispatch(setCategories(categories));
+        }
+        helper();
     }, []);
 
     return (

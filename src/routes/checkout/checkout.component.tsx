@@ -1,15 +1,14 @@
 import CheckoutItem from "../../components/checkout-item/checkout--item.component";
 import {useSelector} from "react-redux";
 import {cartItemsSelector, cartTotalSelector} from "../../store/cart/cart.selectors";
-import ('./checkout.styles.scss');
+import {CheckoutContainer} from "./checkout.styles";
 
 const Checkout = () => {
-    console.log('XXXXXX  Re-render');
     const items = useSelector(cartItemsSelector);
     const total = useSelector(cartTotalSelector);
 
     return (
-        <div className="checkout-container">
+        <CheckoutContainer>
             <div className="checkout-header">
                 <div className="header-block"><span>Product</span></div>
                 <div className="header-block"><span>Description</span></div>
@@ -21,7 +20,7 @@ const Checkout = () => {
                 <CheckoutItem key={item.id} item={item} />
             )}
             <span className="total">Total: ${total}</span>
-        </div>
+        </CheckoutContainer>
     );
 }
 

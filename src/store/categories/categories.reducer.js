@@ -7,7 +7,7 @@ export const CATEGORIES_ACTION_TYPES = {
 }
 
 const INITIAL_STATE = {
-    categoriesMap: {}
+    categories: []
 }
 
 export const categoriesReducer = (state = INITIAL_STATE, action) => {
@@ -15,10 +15,10 @@ export const categoriesReducer = (state = INITIAL_STATE, action) => {
 
     switch (type) {
         case CATEGORIES_ACTION_TYPES.SET_CATEGORIES: {
-            const categoriesMap = payload;
+            const categories = payload;
             return {
                 ...state,
-                categoriesMap
+                categories
             }
         }
 
@@ -27,8 +27,14 @@ export const categoriesReducer = (state = INITIAL_STATE, action) => {
     }
 }
 
-export const setCategoriesMap = (categoriesMap) => {
-    return createAction(CATEGORIES_ACTION_TYPES.SET_CATEGORIES, categoriesMap);
+export const setCategories = (categories) => {
+    return createAction(CATEGORIES_ACTION_TYPES.SET_CATEGORIES, categories);
 }
 
-export const categoriesMapSelector = (state) => state.categories.categoriesMap;
+export const categoriesMapSelector = (state) => state.categories.categories.reduce((acc, data) => {
+    const {title, items} = data;
+    acc[title.toLowerCase()] = items;
+    return acc;
+}, {});
+
+export const categoriesSelector = (state) => state.categories.categories;
