@@ -1,4 +1,5 @@
 import {CARTS_ACTION_TYPES} from "./cart.types";
+import { REHYDRATE, PERSIST } from 'redux-persist';
 
 const INITIAL_STATE = {
     isCartOpen: false,
